@@ -1,0 +1,16 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+venv/
+
+# Raw and processed data
+data/raw/
+data/curated/*.parquet
+
+# VS Code metadata
+.vscode/
+
+# OS junk
+Thumbs.db
