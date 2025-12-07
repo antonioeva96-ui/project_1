@@ -9,8 +9,8 @@ OUT_JAN = Path("data/curated/critical_stations_jan2019.csv")
 
 # soglie
 
-empty_THRESHOLD = 10    # %
-full_THRESHOLD = 10  # %
+empty_THRESHOLD = 20    # %
+full_THRESHOLD = 20  # %
 
 
 def classify_station(row):
@@ -44,17 +44,16 @@ def analyze_month(df: pd.DataFrame, label: str, output_path: Path):
     df = df.copy()
     df["category"] = df.apply(classify_station, axis=1)
 
-    # filtriamo solo quelle NON bilanciate
-    critical = df[df["category"] != "balanced"].copy()
-
     # ordiniamo per criticità: prima quelle molto problematiche
     category_priority = {
         "both_problem": 1,
         "empty_problem": 2,
         "full_problem": 3,
+        "balanced": 4,
     }
 
-    critical["severity"] = critical["category"].map(category_priority)
+    critical = df.copy()
+    critical["severity"] = critical["category"].map(category_priority).fillna(5)
     critical = critical.sort_values(["severity", "pct_empty", "pct_full"], ascending=[True, False, False])
 
     # salvataggio
