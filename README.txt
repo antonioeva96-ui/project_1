@@ -25,7 +25,7 @@ Workflow
    - Legge i CSV critici.
    - Colori: red=empty_problem, blue=full_problem, purple=both_problem, green=balanced.
    - Popup: nome stazione, ID, slot totali, mean_bikes, pct_empty, pct_full, categoria.
-   - Output: mappa_combined_ago2018.html, mappa_combined_jan2019.html
+   - Output: mappa_combined_ago2018.html, mappa_combined_jan2019.html   
 
 Note rapide
 - I CSV critici includono anche le stazioni balanced, ordinate per severità.
