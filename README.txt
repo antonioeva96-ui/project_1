@@ -1,32 +1,32 @@
-Bicing analysis e mappe critiche
+Bicing analysis and critical maps
 ---------------------------------
 
-Requisiti
+Requirements
 - Python 3
 - pandas, folium
-- Dataset parquet: data/curated/bicing_clean.parquet
+- Parquet dataset: data/curated/bicing_clean.parquet
 
 Workflow
-1) Genera le analisi mensili (frequenza stazioni vuote/piene)
+1) Generate the monthly analyses (frequency of empty/full stations)
    python src/eda_bicing.py
-   - Output: data/curated/analysis_ago2018.csv e data/curated/analysis_jan_2019.csv
-   - Calcoli: pct_empty = (times_total_empty / total_observations) * 100; pct_full analogo.
+   - Output: data/curated/analysis_ago2018.csv and data/curated/analysis_jan_2019.csv
+   - Calculations: pct_empty = (times_total_empty / total_observations) * 100; pct_full is analogous.
 
-2) Classifica stazioni e salva CSV critici (inclusi balanced)
+2) Classify stations and save critical CSVs (including balanced)
    python src/analyze_stations.py
-   - Legge i CSV di analisi.
-   - Assegna category: empty_problem, full_problem, both_problem, balanced (soglie 20%).
-   - Ordina per severity e salva:
+   - Reads the analysis CSVs.
+   - Assigns category: empty_problem, full_problem, both_problem, balanced (20% thresholds).
+   - Sorts by severity and saves:
      data/curated/critical_stations_ago2018.csv
      data/curated/critical_stations_jan2019.csv
 
-3) Genera le mappe interattive
+3) Generate interactive maps
    python src/map_bicing.py
-   - Legge i CSV critici.
-   - Colori: red=empty_problem, blue=full_problem, purple=both_problem, green=balanced.
-   - Popup: nome stazione, ID, slot totali, mean_bikes, pct_empty, pct_full, categoria.
-   - Output: mappa_combined_ago2018.html, mappa_combined_jan2019.html   
+   - Reads the critical CSVs.
+   - Colors: red=empty_problem, blue=full_problem, purple=both_problem, green=balanced.
+   - Popup: station name, ID, total slots, mean_bikes, pct_empty, pct_full, category.
+   - Output: mappa_combined_ago2018.html, mappa_combined_jan2019.html
 
-Note rapide
-- I CSV critici includono anche le stazioni balanced, ordinate per severità.
-- Se vuoi cambiare le soglie di criticità, modifica empty_THRESHOLD e full_THRESHOLD in src/analyze_stations.py.
+Quick notes
+- The critical CSVs also include balanced stations, sorted by severity.
+- To change the criticality thresholds, update empty_THRESHOLD and full_THRESHOLD in src/analyze_stations.py.

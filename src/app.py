@@ -1,4 +1,4 @@
-﻿import streamlit as st
+import streamlit as st
 import pandas as pd
 from pathlib import Path
 import folium
@@ -22,8 +22,8 @@ COLOR_MAP = {
 def load_data() -> pd.DataFrame:
     df_aug = pd.read_csv(AUG_CSV)
     df_jan = pd.read_csv(JAN_CSV)
-    df_aug["month"] = "Agosto 2018"
-    df_jan["month"] = "Gennaio 2019"
+    df_aug["month"] = "August 2018"
+    df_jan["month"] = "January 2019"
     combined = pd.concat([df_aug, df_jan], ignore_index=True)
     return combined
 
@@ -39,11 +39,11 @@ def make_map(df: pd.DataFrame) -> folium.Map:
         popup_html = (
             f"<b>{row['streetName']}</b><br>"
             f"ID: {row['station_id']}<br>"
-            f"Slot totali: {row['tot_slots']}<br>"
+            f"Total slots: {row['tot_slots']}<br>"
             f"mean_bikes: {row['mean_bikes']}<br>"
             f"pct_empty: {row['pct_empty']}%<br>"
             f"pct_full: {row['pct_full']}%<br>"
-            f"Categoria: {row['category']}"
+            f"Category: {row['category']}"
         )
         folium.CircleMarker(
             location=[row["lat"], row["long"]],
@@ -59,21 +59,21 @@ def make_map(df: pd.DataFrame) -> folium.Map:
 def main():
     st.set_page_config(page_title="Bicing Critical Stations", layout="wide")
     st.title("Bicing Critical Stations")
-    st.caption("Dashboard interattiva su stazioni critiche (Agosto 2018 vs Gennaio 2019)")
+    st.caption("Interactive dashboard of critical stations (August 2018 vs January 2019)")
 
     df = load_data()
 
     with st.sidebar:
-        st.header("Filtri")
-        month = st.selectbox("Mese", sorted(df["month"].unique()))
+        st.header("Filters")
+        month = st.selectbox("Month", sorted(df["month"].unique()))
         categories = st.multiselect(
-            "Categoria",
+            "Category",
             options=list(COLOR_MAP.keys()),
             default=list(COLOR_MAP.keys()),
         )
         severity_min, severity_max = int(df["severity"].min()), int(df["severity"].max())
         severity_range = st.slider(
-            "Severita",
+            "Severity",
             min_value=severity_min,
             max_value=severity_max,
             value=(severity_min, severity_max),
@@ -94,27 +94,27 @@ def main():
     ]
 
     col1, col2, col3 = st.columns(3)
-    col1.metric("Stazioni filtrate", len(filtered))
+    col1.metric("Filtered stations", len(filtered))
     col2.metric(
-        "mean_bikes medio",
+        "Average mean_bikes",
         round(filtered["mean_bikes"].mean(), 1) if not filtered.empty else "-",
     )
     col3.metric(
-        "% empty medio",
+        "Average % empty",
         f"{filtered['pct_empty'].mean():.1f}%" if not filtered.empty else "-",
     )
 
-    st.subheader("Distribuzione slot per categoria")
+    st.subheader("Slots distribution by category")
     if filtered.empty:
-        st.warning("Nessuna stazione con i filtri selezionati.")
+        st.warning("No stations match the selected filters.")
         return
 
     st.bar_chart(filtered.groupby("category")["tot_slots"].sum())
 
-    st.subheader("Mappa")
+    st.subheader("Map")
     st_folium(make_map(filtered), height=550, width=1100)
 
-    st.subheader("Dettaglio dati")
+    st.subheader("Data details")
     st.dataframe(
         filtered.sort_values(
             ["severity", "pct_empty", "pct_full"], ascending=[False, False, False]
