@@ -9,6 +9,9 @@ venv/
 data/raw/
 data/curated/*.parquet
 
+# Generated maps
+*.html
+
 # VS Code metadata
 .vscode/
 
