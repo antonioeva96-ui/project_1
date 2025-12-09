@@ -10,7 +10,6 @@ Workflow
 1) Generate the monthly analyses (frequency of empty/full stations)
    python src/eda_bicing.py
    - Output: data/curated/analysis_ago2018.csv and data/curated/analysis_jan_2019.csv
-   - Calculations: pct_empty = (times_total_empty / total_observations) * 100; pct_full is analogous.
 
 2) Classify stations and save critical CSVs (including balanced)
    python src/analyze_stations.py
