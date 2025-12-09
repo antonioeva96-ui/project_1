@@ -1,8 +1,8 @@
 import pandas as pd
 from pathlib import Path
 
-AUG = Path("data/curated/analysis_ago2018.csv")
-JAN = Path("data/curated/analysis_jan_2019.csv")
+AUG = Path("data/curated/station_metrics_2018_08.csv")
+JAN = Path("data/curated/station_metrics_2019_01.csv")
 
 OUT_AUG = Path("data/curated/critical_stations_ago2018.csv")
 OUT_JAN = Path("data/curated/critical_stations_jan2019.csv")

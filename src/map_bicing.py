@@ -56,8 +56,8 @@ def main():
     df_aug = pd.read_csv(AUG_CSV)
     df_jan = pd.read_csv(JAN_CSV)
 
-    generate_combined_map(df_aug, "August 2018", "mappa_combined_ago2018.html")
-    generate_combined_map(df_jan, "January 2019", "mappa_combined_jan2019.html")
+    generate_combined_map(df_aug, "August 2018", "map_ago2018.html")
+    generate_combined_map(df_jan, "January 2019", "map_jan2019.html")
 
 
 if __name__ == "__main__":

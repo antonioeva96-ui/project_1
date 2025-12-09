@@ -5,8 +5,8 @@ from pathlib import Path
 CURATED_PATH = Path("data/curated/bicing_clean.parquet")
 
 # Output CSV
-OUT_AUG = Path("data/curated/analysis_ago2018.csv")
-OUT_JAN = Path("data/curated/analysis_jan_2019.csv")
+OUT_AUG = Path("data/curated/station_metrics_2018_08.csv")
+OUT_JAN = Path("data/curated/station_metrics_2019_01.csv")
 
 
 def build_month_analysis(df_month: pd.DataFrame) -> pd.DataFrame:
