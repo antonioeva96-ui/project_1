@@ -19,6 +19,35 @@ def color_for_category(category: str) -> str:
     return color_map.get(category, "gray")
 
 
+def add_legend(m: folium.Map):
+    """
+    Add a fixed legend explaining category colors and thresholds.
+    Thresholds come from critical_stations.py (empty_THRESHOLD=20%, full_THRESHOLD=20%).
+    """
+    legend_items = [
+        ("Empty problem (>20% empty)", "red"),
+        ("Full problem (>20% full)", "blue"),
+        ("Both problem (>20% empty & >20% full)", "purple"),
+        ("Balanced (within thresholds)", "green"),
+    ]
+    rows = "".join(
+        f"<div style='margin-bottom:4px;'>"
+        f"<span style='display:inline-block;width:12px;height:12px;"
+        f"background:{color};margin-right:6px;border:1px solid #555;'></span>{label}"
+        f"</div>"
+        for label, color in legend_items
+    )
+    legend_html = (
+        "<div style='position: fixed; bottom: 20px; left: 20px; z-index: 9999; "
+        "background: white; padding: 10px 12px; border: 1px solid #b3b3b3; "
+        "box-shadow: 0 2px 6px rgba(0,0,0,0.2); font-size: 13px; line-height: 1.2;'>"
+        "<b>Legend</b><br>"
+        f"{rows}"
+        "</div>"
+    )
+    m.get_root().html.add_child(folium.Element(legend_html))
+
+
 def generate_combined_map(df: pd.DataFrame, month_label: str, output_name: str):
     # Center map on Barcelona
     m = folium.Map(location=[41.3851, 2.1734], zoom_start=13)
@@ -48,6 +77,7 @@ def generate_combined_map(df: pd.DataFrame, month_label: str, output_name: str):
             popup=popup_html,
         ).add_to(m)
 
+    add_legend(m)
     m.save(output_name)
     print(f"Combined map generated ({month_label}): {output_name}")
 
